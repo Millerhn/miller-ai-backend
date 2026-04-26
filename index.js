@@ -6,10 +6,11 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.get("/", (req, res) => {
   res.send("Servidor Miller AI funcionando 🚀");
@@ -40,8 +41,12 @@ app.post("/chat", async (req, res) => {
       reply: response.data.choices[0].message.content
     });
   } catch (error) {
-    console.error(error.response?.data || error.message);
-    res.status(500).send("Error con la IA");
+    console.error("ERROR OPENAI:", error.response?.data || error.message);
+
+    res.status(500).json({
+      error: "Error con la IA",
+      detail: error.response?.data || error.message
+    });
   }
 });
 
