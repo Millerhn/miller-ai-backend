@@ -12,7 +12,6 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
 
-// Inicializar Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.get("/", (req, res) => {
@@ -34,13 +33,9 @@ app.post("/chat", async (req, res) => {
     });
 
     const result = await model.generateContent(message);
-    const response = result.response;
-    const text = response.text();
+    const reply = result.response.text();
 
-    res.json({
-      reply: text
-    });
-
+    res.json({ reply });
   } catch (error) {
     console.error("ERROR GEMINI:", error);
 
